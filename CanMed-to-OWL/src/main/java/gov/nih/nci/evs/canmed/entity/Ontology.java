@@ -313,6 +313,7 @@ public class Ontology {
 
                 String drugNameCode = "HCPCS_" + CanmedToOwl.parseConceptCode(drugName);
 
+
                 if (concepts.containsKey(drugNameCode)) {
                     DrugNameConcept = concepts.get(drugNameCode);
                 } else {
@@ -400,7 +401,7 @@ public class Ontology {
 
             }
             catch (Exception e) {
-                System.out.println("No code found for NDC data line: " + dataLine);
+                System.out.println("No code found for HCPCS data line: " + dataLine);
             }
         }
     }

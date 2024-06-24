@@ -118,12 +118,16 @@ class OwlWriter {
         HashMap<String, HierarchicalConcept> conceptMap = cmOntology.getConcepts();
 
         for (String conceptCode : conceptMap.keySet()) {
+            try {
             if(conceptCode.equals("HCPCS_")){
                 String debug="Stop";
+            } else if (conceptCode.length()<3){
+                String debug="Stop";
+                throw new RuntimeException("Concept code is too short");
             }
             // Assume hierarchy is unknown
 
-            try {
+
                 HierarchicalConcept concept = conceptMap.get(conceptCode);
                 OWLClass clz = factory.getOWLClass(createIRI(concept.getCode().replace(":", "_")));
                 OWLClass parent = factory.getOWLThing();
@@ -158,7 +162,7 @@ class OwlWriter {
                 }
 
             } catch (Exception e) {
-                System.out.println("Error adding axiom: " + conceptCode);
+                System.out.println("Error adding axiom: " + conceptCode );
             }
         }
     }

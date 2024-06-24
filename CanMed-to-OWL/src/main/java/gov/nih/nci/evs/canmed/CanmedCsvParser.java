@@ -89,8 +89,9 @@ public class CanmedCsvParser {
         //https://stackoverflow.com/questions/1757065/java-splitting-a-comma-separated-string-but-ignoring-commas-in-quotes
         //String input = "foo,bar,c;qual=\"baz,blurb\",d;junk=\"quux,syzygy\"";
         List<String> result = new ArrayList<String>();
-        int start = 1;
+        int start = 0;
         boolean inQuotes = false;
+
         try{
         for (int current = 0; current < input.length(); current++) {
             if (input.charAt(current) == '\"') inQuotes = !inQuotes; // toggle state
@@ -108,13 +109,18 @@ public class CanmedCsvParser {
             else if (input.charAt(current) == ',' && !inQuotes) {
                 String token = input.substring(start, current-1);
                 if(!token.isEmpty()){
-                if(token.startsWith("\"")){
+
+                if (token.startsWith("\uFEFF")){
                     token = token.substring(1, token.length());
-                }
+                    }
+                    if(token.startsWith("\"")){
+                        token = token.substring(1, token.length());
+                    }
                 if(token.endsWith("\"")){
                     token = token.substring(0, token.length()-1);
                 }}
-                result.add(token.trim());
+                String trimToken = token.replaceAll("^\"|\"$", "");
+                result.add(trimToken.trim());
 //                result.add(input.substring(start, current));
                 start = current + 1;
             }
